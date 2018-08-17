@@ -8,5 +8,6 @@ object Main extends App with AppConfig {
   val twitterService = new TwitterService(trackedHashtags)
   val slackService   = new SlackService(webhookUri)
 
+  new IsAliveCheck(host, port).bindIsAliveRoute
   new TwitterSlackComposer(twitterService, slackService)
 }

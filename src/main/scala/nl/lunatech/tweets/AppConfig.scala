@@ -7,6 +7,10 @@ import scala.collection.JavaConverters._
 
 trait AppConfig {
   private val configuration: Config = ConfigFactory.load
-  val slackWebhookUrl               = configuration.getString("slack.webhook-url")
-  val trackedHashtags               = configuration.getStringList("slack.tracked-hashtags").asScala.toList
+
+  val slackWebhookUrl = configuration.getString("slack.webhook-url")
+  val trackedHashtags = configuration.getStringList("slack.tracked-hashtags").asScala.toList
+
+  val host = configuration.getString("akka.host")
+  val port = configuration.getInt("akka.port")
 }
