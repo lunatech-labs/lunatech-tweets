@@ -17,7 +17,7 @@ class IsAliveCheck(host: String, port: Int) {
   val route =
     path("isAlive") {
       get {
-        complete("Is alive!")
+        complete("I'm alive!")
       }
     }
 
