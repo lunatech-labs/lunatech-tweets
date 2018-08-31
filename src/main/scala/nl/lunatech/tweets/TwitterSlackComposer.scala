@@ -13,9 +13,11 @@ class TwitterSlackComposer(twitterService: TwitterService, slackService: SlackSe
 
   twitterService.getStreamingData {
     case tweet: Tweet =>
-      slackService.postMessage(
-        getUserName(tweet),
-        tweet.text
-      )
+      if (!tweet.retweeted) {
+        slackService.postMessage(
+          getUserName(tweet),
+          tweet.text
+        )
+      }
   }
 }
