@@ -8,11 +8,11 @@ class SlackService(webhookUri: Uri) {
 
   private val contentType = "application/json"
 
-  def postMessage(fromName: String, message: String): Unit = {
-    implicit val backend = HttpURLConnectionBackend()
-
+  def postMessage(sttp: RequestT[Empty, String, Nothing], messageFrom: String, message: String)(
+      implicit backend: SttpBackend[Id, Nothing]
+  ): Int = {
     val processedMessage = escapeQuotes(message)
-    val requestBody      = s"""{"text": "$fromName:\n $processedMessage"}"""
+    val requestBody      = s"""{"text": "$messageFrom:\n $processedMessage"}"""
 
     val response = sttp
       .post(webhookUri)
@@ -24,7 +24,9 @@ class SlackService(webhookUri: Uri) {
       case 200 => log.debug(s"Message received by Slack $requestBody")
       case _ => log.error(s"Message failed: $requestBody with error: $response")
     }
+
+    response.code
   }
 
-  private def escapeQuotes(text: String): String = text.replace("\"", "\\\"")
+  private[tweets] def escapeQuotes(text: String): String = text.replace("\"", "\\\"")
 }
